@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from requests_html import HTMLSession
 
+
 def build_speechlet_response(title, output, should_end_session):
     return {
         'outputSpeech': {
@@ -11,7 +12,7 @@ def build_speechlet_response(title, output, should_end_session):
         'card': {
             'type': 'Simple',
             'title': "SessionSpeechlet - " + title,
-            'content': "SessionSpeechlet - " + output
+            'content': "SessionSpeechlet - The latest gossip"
         },
         'shouldEndSession': should_end_session
     }
@@ -38,7 +39,8 @@ def retrieve_gossip_strings(url):
 
 
 def output_alexa_audio(gossips, session_attributes):
-        speech_output = "<speak>" + "<s>".join(gossips) + "</speak>"
+        ssml_gossip = ["<s>" + gossip + "</s>" for gossip in gossips]
+        speech_output = "<speak>" + "".join(ssml_gossip) + "</speak>"
 
         return build_response(session_attributes,  build_speechlet_response('getGossip', speech_output, True))
 
