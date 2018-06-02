@@ -1,7 +1,9 @@
 
 # -*- coding: utf-8 -*-
 from requests_html import HTMLSession
+import re
 
+_speech_speed = '90%'
 
 def build_speechlet_response(title, output, should_end_session):
     return {
@@ -28,20 +30,28 @@ def build_response(session_attributes, speechlet_response):
 
 def retrieve_gossip_strings(url):
     session = HTMLSession()
+
     r = session.get(url)
 
-    gossips = r.html.find('#story-body', first=True)
-    gossip = [p.text for p in gossips.find('p')]
+    gossip_outer_class = r.html.find('#story-body', first=True)
+    gossips = [re.sub("[\(\[].*?[\)\]]", "", p.text) for p in gossip_outer_class.find('p')]
 
     session.close()
 
-    return gossip
+    return gossips
+
+
+def transform_gossips_to_ssml_output(gossips):
+    """Add SSML tags to gossips and remove all text in brackets"""
+
+    ssml_gossip = ["<s><prosody rate=%s>" % _speech_speed + re.sub("[\(\[].*?[\)\]]", "", gossip) + "</prosody></s>" for gossip in gossips]
+    speech_output = "<speak>" + "".join(ssml_gossip) + "</speak>"
+
+    return speech_output
 
 
 def output_alexa_audio(gossips, session_attributes):
-        ssml_gossip = ["<s>" + gossip + "</s>" for gossip in gossips]
-        speech_output = "<speak>" + "".join(ssml_gossip) + "</speak>"
-
+        speech_output = transform_gossips_to_ssml_output(gossips)
         return build_response(session_attributes,  build_speechlet_response('getGossip', speech_output, True))
 
 
@@ -71,8 +81,5 @@ def handler(event, context):
         return on_intent(event['request'], event['session'])
 
     return
-
-if __name__ == "__main__":
-    handler('', '')
 
 
