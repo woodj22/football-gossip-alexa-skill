@@ -24,3 +24,5 @@ var/
 
 # Serverless directories
 .serverless
+
+mock_responses/
