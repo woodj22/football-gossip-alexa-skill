@@ -55,36 +55,35 @@ def retrieve_gossip_strings(url):
 
 def create_alexa_gossip_output(gossips, session):
     """Add SSML tags to gossips and remove all text in brackets"""
-    if session['new'] is False:
-
+    try:
         session_start = session['attributes']['currentGossipIndex']
-        session_end = session_start + 5
-
-        if session_end > len(gossips):
-            session_end = len(gossips)
-
-            should_end_session = True
-            suffix_sentence = 'That is all the gossip for today. Goodbye!'
-        else:
-            should_end_session = False
-            suffix_sentence = 'Would you like to continue?'
-
-    else:
-        should_end_session = False
-        suffix_sentence = 'Would you like to continue?'
-        session_end = 5
+    except KeyError:
         session_start = 0
 
-    sliced_gossip = gossips[session_start:session_end]
+    session_end = session_start + 5
 
-    # sliced_gossip = gossips[:1]
+    if session_end > len(gossips):
+        session_end = len(gossips)
 
-    ssml_gossip = ["<p><prosody rate=%s>" % _speech_speed + re.sub("[\(\[].*?[\)\]]", "", gossip) + "</prosody></p>" for
-                   gossip in sliced_gossip]
+        should_end_session = True
+        suffix_sentence = 'That is all the gossip for today. Goodbye!'
+    else:
+        should_end_session = False
+        suffix_sentence = 'Would you like me to continue?'
 
-    speech_output = "<speak>" + "".join(ssml_gossip) + suffix_sentence + "</speak>"
+    sliced_gossips = gossips[session_start:session_end]
+
+    speech_output = build_gossip_ssml_string(sliced_gossips, suffix_sentence)
     session_attributes = {'currentGossipIndex': session_end}
+
     return build_response(session_attributes, build_speechlet_response('getGossip', speech_output, should_end_session))
+
+
+def build_gossip_ssml_string(gossips, suffix_sentence):
+    ssml_gossip = ["<p><prosody rate=%s>" % _speech_speed + re.sub("[\(\[].*?[\)\]]", "", gossip) + "</prosody></p>" for
+                   gossip in gossips]
+
+    return "<speak>" + "".join(ssml_gossip) + suffix_sentence + "</speak>"
 
 
 def build_speechlet_response(title, output, should_end_session):
