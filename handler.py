@@ -2,7 +2,7 @@
 from requests_html import HTMLSession
 import re
 
-_speech_speed = '90%'
+_speech_speed = "'100%'"
 _gossip_url = "https://www.bbc.co.uk/sport/football/gossip"
 
 
@@ -24,13 +24,20 @@ def on_intent(intent_request, session):
           ", sessionId=" + session['sessionId'])
 
     intent_name = intent_request['intent']['name']
-
-    # Dispatch to your skill's intent handlers
+    confirmation = intent_request['intent']['confirmationStatus']
     if intent_name == "getGossip":
+        if confirmation == 'DENIED':
+            return create_goodbye_output()
         gossips = retrieve_gossip_strings(_gossip_url)
-        return create_alexa_output(gossips, {'gossip_count': len(gossips)})
+        return create_alexa_gossip_output(gossips, session)
     else:
         raise ValueError("Invalid intent")
+
+
+def create_goodbye_output():
+    speech_output = "<speak><s>Thank you for reading the gossip.</s><s>Have a pleasant day.</s></speak>"
+
+    return build_response({}, build_speechlet_response('goodbye!', speech_output, True))
 
 
 def retrieve_gossip_strings(url):
@@ -46,15 +53,38 @@ def retrieve_gossip_strings(url):
     return gossips
 
 
-
-def create_alexa_output(gossips, session_attributes):
+def create_alexa_gossip_output(gossips, session):
     """Add SSML tags to gossips and remove all text in brackets"""
+    if session['new'] is False:
 
-    ssml_gossip = ["<s><prosody rate=%s>" % _speech_speed + re.sub("[\(\[].*?[\)\]]", "", gossip) + "</prosody></s>" for
-                   gossip in gossips]
-    speech_output = "<speak>" + "".join(ssml_gossip) + "</speak>"
+        session_start = session['attributes']['currentGossipIndex']
+        session_end = session_start + 5
 
-    return build_response(session_attributes, build_speechlet_response('getGossip', speech_output, True))
+        if session_end > len(gossips):
+            session_end = len(gossips)
+
+            should_end_session = True
+            suffix_sentence = 'That is all the gossip for today. Goodbye!'
+        else:
+            should_end_session = False
+            suffix_sentence = 'Would you like to continue?'
+
+    else:
+        should_end_session = False
+        suffix_sentence = 'Would you like to continue?'
+        session_end = 5
+        session_start = 0
+
+    sliced_gossip = gossips[session_start:session_end]
+
+    # sliced_gossip = gossips[:1]
+
+    ssml_gossip = ["<p><prosody rate=%s>" % _speech_speed + re.sub("[\(\[].*?[\)\]]", "", gossip) + "</prosody></p>" for
+                   gossip in sliced_gossip]
+
+    speech_output = "<speak>" + "".join(ssml_gossip) + suffix_sentence + "</speak>"
+    session_attributes = {'currentGossipIndex': session_end}
+    return build_response(session_attributes, build_speechlet_response('getGossip', speech_output, should_end_session))
 
 
 def build_speechlet_response(title, output, should_end_session):
@@ -68,7 +98,14 @@ def build_speechlet_response(title, output, should_end_session):
             'title': "SessionSpeechlet - " + title,
             'content': "SessionSpeechlet - The latest gossip"
         },
-        'shouldEndSession': should_end_session
+        'shouldEndSession': should_end_session,
+        'directives': [{
+            "type": "Dialog.ConfirmIntent",
+            "updatedIntent": {
+                "name": "getGossip",
+                "confirmationStatus": "NONE",
+            }
+        }]
     }
 
 
