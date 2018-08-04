@@ -27,7 +27,7 @@ This installs all the requirements if any changes have been made.
 #### Test the code
 
 testing locally:
-`serverless invoke local --function gossip -p /tests/mock.json`
+`serverless invoke local --function gossip -p /mock_requests/get_gossip_request.json`
 
 This will pass the mock json into the events handler of python module. To get the mock json, add a file to the tests folder which contains output of the Alexa skill.
 

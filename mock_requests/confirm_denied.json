@@ -1,0 +1,102 @@
+{
+	"version": "1.0",
+	"session": {
+		"new": false,
+		"sessionId": "amzn1.echo-api.session.73a8da62-ecbf-46c6-85ff-7281675c285f",
+		"application": {
+			"applicationId": "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"
+		},
+		"attributes": {
+			"new": false,
+			"application": {
+				"applicationId": "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"
+			},
+			"attributes": {
+				"new": false,
+				"application": {
+					"applicationId": "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"
+				},
+				"attributes": {
+					"new": false,
+					"application": {
+						"applicationId": "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"
+					},
+					"attributes": {
+						"new": false,
+						"application": {
+							"applicationId": "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"
+						},
+						"attributes": {
+							"new": true,
+							"application": {
+								"applicationId": "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"
+							},
+							"sessionId": "amzn1.echo-api.session.73a8da62-ecbf-46c6-85ff-7281675c285f",
+							"user": {
+								"userId": "amzn1.ask.account.sdfg"
+							}
+						},
+						"sessionId": "amzn1.echo-api.session.73a8da62-ecbf-46c6-85ff-7281675c285f",
+						"user": {
+							"userId": "amzn1.ask.account.sdfg"
+						}
+					},
+					"sessionId": "amzn1.echo-api.session.73a8da62-ecbf-46c6-85ff-7281675c285f",
+					"user": {
+						"userId": "amzn1.ask.account.dfg"
+					}
+				},
+				"sessionId": "amzn1.echo-api.session.73a8da62-ecbf-46c6-85ff-7281675c285f",
+				"user": {
+					"userId": "amzn1.ask.account.dfg"
+				}
+			},
+			"sessionId": "amzn1.echo-api.session.73a8da62-ecbf-46c6-85ff-7281675c285f",
+			"user": {
+				"userId": "amzn1.ask.account.sdfg"
+			}
+		},
+		"user": {
+			"userId": "amzn1.ask.account.afd"
+		}
+	},
+	"context": {
+		"AudioPlayer": {
+			"playerActivity": "IDLE"
+		},
+		"Display": {
+			"token": ""
+		},
+		"System": {
+			"application": {
+				"applicationId": "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"
+			},
+			"user": {
+				"userId": "amzn1.ask.account.jbrf"
+			},
+			"device": {
+				"deviceId": "amzn1.ask.device.weodgfi",
+				"supportedInterfaces": {
+					"AudioPlayer": {},
+					"Display": {
+						"templateVersion": "1.0",
+						"markupVersion": "1.0"
+					}
+				}
+			},
+			"apiEndpoint": "https://api.eu.amazonalexa.com",
+			"apiAccessToken": "oergieh..aCINq---seoidfgj"
+		}
+	},
+	"request": {
+		"type": "IntentRequest",
+		"requestId": "amzn1.echo-api.request.6918fd47-0078-400d-851f-809aaeaeec41",
+		"timestamp": "2018-06-03T14:53:21Z",
+		"locale": "en-GB",
+		"intent": {
+			"name": "getGossip",
+			"confirmationStatus": "DENIED"
+		},
+		"dialogState": "IN_PROGRESS"
+	}
+}

@@ -1,0 +1,49 @@
+{
+	"version": "1.0",
+	"session": {
+		"new": true,
+		"sessionId": "amzn1.echo-api.session.31724f06-b61e-4a36-bb8e-397f0d89127c",
+		"application": {
+			"applicationId": "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"
+		},
+		"user": {
+			"userId": "amzn1.ask.account.userid"
+		}
+	},
+	"context": {
+		"AudioPlayer": {
+			"playerActivity": "IDLE"
+		},
+		"Display": {},
+		"System": {
+			"application": {
+				"applicationId": "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"
+			},
+			"user": {
+				"userId": "amzn1.ask.account.useidroinf"
+			},
+			"device": {
+				"deviceId": "amzn1.ask.device.deviceid",
+				"supportedInterfaces": {
+					"AudioPlayer": {},
+					"Display": {
+						"templateVersion": "1.0",
+						"markupVersion": "1.0"
+					}
+				}
+			},
+			"apiEndpoint": "https://api.eu.amazonalexa.com",
+			"apiAccessToken": ".fakeMock.json"
+		}
+	},
+	"request": {
+		"type": "IntentRequest",
+		"requestId": "amzn1.echo-api.request.3b6b8454-f61e-43ca-ab2d-b7dc289f919f",
+		"timestamp": "2018-06-02T13:16:17Z",
+		"locale": "en-GB",
+		"intent": {
+			"name": "getGossip",
+			"confirmationStatus": "NONE"
+		}
+	}
+}
