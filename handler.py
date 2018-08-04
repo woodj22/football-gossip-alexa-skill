@@ -105,13 +105,6 @@ def build_speechlet_response(title, output, should_end_session):
             'content': "Listen to the latest english football gossip."
         },
         'shouldEndSession': should_end_session,
-        'directives': [{
-            "type": "Dialog.ConfirmIntent",
-            "updatedIntent": {
-                "name": "getGossip",
-                "confirmationStatus": "NONE",
-            }
-        }]
     }
 
 
