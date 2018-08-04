@@ -76,7 +76,7 @@ def create_alexa_gossip_output(gossips, session):
     speech_output = build_gossip_ssml_string(sliced_gossips, suffix_sentence)
     session_attributes = {'currentGossipIndex': session_end}
 
-    return build_response(session_attributes, build_speechlet_response('getGossip', speech_output, should_end_session))
+    return build_response(session_attributes, build_speechlet_response('football gossip', speech_output, should_end_session))
 
 
 def build_gossip_ssml_string(gossips, suffix_sentence):
@@ -94,8 +94,8 @@ def build_speechlet_response(title, output, should_end_session):
         },
         'card': {
             'type': 'Simple',
-            'title': "SessionSpeechlet - " + title,
-            'content': "SessionSpeechlet - The latest gossip"
+            'title': title,
+            'content': "Listen to the latest english football gossip."
         },
         'shouldEndSession': should_end_session,
         'directives': [{
