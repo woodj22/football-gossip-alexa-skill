@@ -16,7 +16,6 @@ def handler(event, context):
 
     if event['request']['type'] == "LaunchRequest":
         return get_gossip_intent('ACCEPT', event['session'])
-
     return
 
 
@@ -30,6 +29,10 @@ def on_intent(intent_request, session):
     confirmation = intent_request['intent']['confirmationStatus']
     if intent_name == "getGossip":
         return get_gossip_intent(confirmation, session)
+    if intent_name == "AMAZON.StopIntent":
+        return get_stop_response()
+    if intent_name == "AMAZON.CancelIntent":
+        return get_stop_response()
     else:
         raise ValueError("Invalid intent")
 
@@ -41,8 +44,13 @@ def get_gossip_intent(confirmation, session):
     return create_alexa_gossip_output(gossips, session)
 
 
+def get_stop_response():
+    """ end the session, user wants to quit the game """
+    return create_goodbye_output()
+
+
 def create_goodbye_output():
-    speech_output = "<speak><s>Thank you for reading the gossip.</s><s>Have a pleasant day.</s></speak>"
+    speech_output = "<speak><s>Thank you for reading the gossip.</s><s> Have a pleasant day.</s></speak>"
 
     return build_response({}, build_speechlet_response('goodbye!', speech_output, True))
 
