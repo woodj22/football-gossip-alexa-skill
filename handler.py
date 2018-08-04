@@ -14,6 +14,9 @@ def handler(event, context):
     if event['request']['type'] == "IntentRequest":
         return on_intent(event['request'], event['session'])
 
+    if event['request']['type'] == "LaunchRequest":
+        return get_gossip_intent('ACCEPT', event['session'])
+
     return
 
 
@@ -26,12 +29,16 @@ def on_intent(intent_request, session):
     intent_name = intent_request['intent']['name']
     confirmation = intent_request['intent']['confirmationStatus']
     if intent_name == "getGossip":
-        if confirmation == 'DENIED':
-            return create_goodbye_output()
-        gossips = retrieve_gossip_strings(_gossip_url)
-        return create_alexa_gossip_output(gossips, session)
+        return get_gossip_intent(confirmation, session)
     else:
         raise ValueError("Invalid intent")
+
+
+def get_gossip_intent(confirmation, session):
+    if confirmation == 'DENIED':
+        return create_goodbye_output()
+    gossips = retrieve_gossip_strings(_gossip_url)
+    return create_alexa_gossip_output(gossips, session)
 
 
 def create_goodbye_output():
