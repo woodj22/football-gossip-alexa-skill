@@ -15,7 +15,7 @@ def handler(event, context):
         return on_intent(event['request'], event['session'])
 
     if event['request']['type'] == "LaunchRequest":
-        return get_gossip_intent('ACCEPT', event['session'])
+        return on_launch(event['request'], event['session'])
     return
 
 
@@ -28,7 +28,7 @@ def on_intent(intent_request, session):
     intent_name = intent_request['intent']['name']
     confirmation = intent_request['intent']['confirmationStatus']
     if intent_name == "getGossip":
-        return get_gossip_intent(confirmation, session)
+        return get_gossip_response(confirmation, session)
     if intent_name == "AMAZON.StopIntent":
         return get_stop_response()
     if intent_name == "AMAZON.CancelIntent":
@@ -37,7 +37,11 @@ def on_intent(intent_request, session):
         raise ValueError("Invalid intent")
 
 
-def get_gossip_intent(confirmation, session):
+def on_launch(launch_request, session):
+    return get_gossip_response("ACCEPT", session)
+
+
+def get_gossip_response(confirmation, session):
     if confirmation == 'DENIED':
         return create_goodbye_output()
     gossips = retrieve_gossip_strings(_gossip_url)
@@ -52,7 +56,7 @@ def get_stop_response():
 def create_goodbye_output():
     speech_output = "<speak><s>Thank you for reading the gossip.</s><s> Have a pleasant day.</s></speak>"
 
-    return build_response({}, build_speechlet_response('goodbye!', speech_output, True))
+    return response({}, build_speechlet_response('goodbye!', speech_output, True))
 
 
 def retrieve_gossip_strings(url):
@@ -91,7 +95,7 @@ def create_alexa_gossip_output(gossips, session):
     speech_output = build_gossip_ssml_string(sliced_gossips, suffix_sentence)
     session_attributes = {'currentGossipIndex': session_end}
 
-    return build_response(session_attributes, build_speechlet_response('football gossip', speech_output, should_end_session))
+    return response(session_attributes, build_speechlet_response('football gossip', speech_output, should_end_session))
 
 
 def build_gossip_ssml_string(gossips, suffix_sentence):
@@ -116,7 +120,7 @@ def build_speechlet_response(title, output, should_end_session):
     }
 
 
-def build_response(session_attributes, speechlet_response):
+def response(session_attributes, speechlet_response):
     return {
         'version': '1.0',
         'sessionAttributes': session_attributes,
