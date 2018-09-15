@@ -2,8 +2,8 @@
 from requests_html import HTMLSession
 import re
 
-_speech_speed = "'100%'"
-_gossip_url = "https://www.bbc.co.uk/sport/football/gossip"
+SPEECH_SPEED = "'100%'"
+GOSSIP_URL = "https://www.bbc.co.uk/sport/football/gossip"
 
 
 def handler(event, context):
@@ -19,6 +19,10 @@ def handler(event, context):
     return
 
 
+def on_launch(launch_request, session):
+    return get_gossip_response("ACCEPT", session)
+
+
 def on_intent(intent_request, session):
     """ Called when the user specifies an intent for this skill """
 
@@ -26,37 +30,46 @@ def on_intent(intent_request, session):
           ", sessionId=" + session['sessionId'])
 
     intent_name = intent_request['intent']['name']
-    confirmation = intent_request['intent']['confirmationStatus']
+
     if intent_name == "getGossip":
-        return get_gossip_response(confirmation, session)
+        return get_gossip_response()
+    if intent_name == "AMAZON.HelpIntent":
+        return get_help_response()
     if intent_name == "AMAZON.StopIntent":
         return get_stop_response()
     if intent_name == "AMAZON.CancelIntent":
         return get_stop_response()
+    if intent_name == "AMAZON.YesIntent":
+        return get_gossip_response()
+    if intent_name == "AMAZON.FallbackIntent":
+        return get_fallback_response()
     else:
         raise ValueError("Invalid intent")
 
+def get_gossip_response():
+    gossips = retrieve_gossip_strings(GOSSIP_URL)
 
-def on_launch(launch_request, session):
-    return get_gossip_response("ACCEPT", session)
+    return create_alexa_gossip_output(gossips)
 
 
-def get_gossip_response(confirmation, session):
-    if confirmation == 'DENIED':
-        return create_goodbye_output()
-    gossips = retrieve_gossip_strings(_gossip_url)
-    return create_alexa_gossip_output(gossips, session)
+def get_help_response():
+    """ Help response must end in a question. Amazon rules."""
+    output = "<speak><s>You can say get me the gossip, or, you can say exit... What can I help you with?</s></speak>"
+
+    return response(build_speechlet_with_prompt_response(output, output, False))
 
 
 def get_stop_response():
-    """ end the session, user wants to quit the game """
-    return create_goodbye_output()
-
-
-def create_goodbye_output():
+    """ end the session."""
     speech_output = "<speak><s>Thank you for reading the gossip.</s><s> Have a pleasant day.</s></speak>"
 
-    return response({}, build_speechlet_response('goodbye!', speech_output, True))
+    return response(build_speechlet_response('Goodbye!', speech_output, True))
+
+
+def get_fallback_response():
+    output = "The football gossip skill can't help you with that. . What can I help you with?"
+
+    return response(build_speechlet_response("What can I help you with?", output, False))
 
 
 def retrieve_gossip_strings(url):
@@ -74,38 +87,20 @@ def retrieve_gossip_strings(url):
 
 def create_alexa_gossip_output(gossips, session):
     """Add SSML tags to gossips and remove all text in brackets"""
-    try:
-        session_start = session['attributes']['currentGossipIndex']
-    except KeyError:
-        session_start = 0
 
-    session_end = session_start + 5
+    speech_output = build_gossip_ssml_string(gossips)
 
-    if session_end > len(gossips):
-        session_end = len(gossips)
-
-        should_end_session = True
-        suffix_sentence = 'That is all the gossip for today. Goodbye!'
-    else:
-        should_end_session = False
-        suffix_sentence = 'Would you like me to continue?'
-
-    sliced_gossips = gossips[session_start:session_end]
-
-    speech_output = build_gossip_ssml_string(sliced_gossips, suffix_sentence)
-    session_attributes = {'currentGossipIndex': session_end}
-
-    return response(session_attributes, build_speechlet_response('football gossip', speech_output, should_end_session))
+    return response(build_speechlet_response('football gossip', speech_output, True))
 
 
-def build_gossip_ssml_string(gossips, suffix_sentence):
-    ssml_gossip = ["<p><prosody rate=%s>" % _speech_speed + re.sub("[\(\[].*?[\)\]]", "", gossip) + "</prosody></p>" for
+def build_gossip_ssml_string(gossips):
+    ssml_gossip = ["<p><prosody rate=%s>" % SPEECH_SPEED + re.sub("[\(\[].*?[\)\]]", "", gossip) + "</prosody></p>" for
                    gossip in gossips]
 
-    return "<speak>" + "".join(ssml_gossip) + suffix_sentence + "</speak>"
+    return "<speak>" + "".join(ssml_gossip) + "</speak>"
 
 
-def build_speechlet_response(title, output, should_end_session):
+def build_speechlet_response(title, output, end_session):
     return {
         'outputSpeech': {
             'type': 'SSML',
@@ -116,11 +111,29 @@ def build_speechlet_response(title, output, should_end_session):
             'title': title,
             'content': "Listen to the latest english football gossip."
         },
-        'shouldEndSession': should_end_session,
+        'shouldEndSession': end_session,
     }
 
 
-def response(session_attributes, speechlet_response):
+def build_speechlet_with_prompt_response(output, reprompt_text, end_session):
+    """ create a simple json response with a prompt """
+
+    return {
+        'outputSpeech': {
+            'type': 'SSML',
+            'text': output
+        },
+        'reprompt': {
+            'outputSpeech': {
+                'type': 'SSML',
+                'text': reprompt_text
+            }
+        },
+        'shouldEndSession': end_session
+    }
+
+
+def response(speechlet_response, session_attributes={}):
     return {
         'version': '1.0',
         'sessionAttributes': session_attributes,
