@@ -10,7 +10,7 @@ class RespondWithIntent:
 
     def get_help_response(self):
         """ Help response must end in a question. Amazon rules."""
-        output = "<speak><s>You can say get me the gossip, or, you can say exit...</s> <s> What can I help you with?</s></speak>"
+        output = "<speak><s>You can say what's the gossip, or, you can say exit...</s> <s> What can I help you with?</s></speak>"
 
         return self._response(self._build_speechlet_with_reprompt_response('football gossip', output, output, False))
 
