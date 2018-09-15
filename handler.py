@@ -2,6 +2,7 @@
 
 from response import RespondWithIntent
 
+
 def handler(event, context):
     if (event['session']['application']['applicationId'] !=
             "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"):

@@ -25,7 +25,8 @@ class RespondWithIntent:
 
         return self._response(self._build_speechlet_response("What can I help you with?", output, False))
 
-    def _build_speechlet_response(self, title, output, end_session):
+    @staticmethod
+    def _build_speechlet_response(title, output, end_session):
         return {
             'outputSpeech': {
                 'type': 'SSML',
@@ -39,7 +40,8 @@ class RespondWithIntent:
             'shouldEndSession': end_session,
         }
 
-    def _build_speechlet_with_reprompt_response(self, title, output, reprompt_text, end_session):
+    @staticmethod
+    def _build_speechlet_with_reprompt_response(title, output, reprompt_text, end_session):
         """ create a simple json response with a prompt """
 
         return {
@@ -61,7 +63,8 @@ class RespondWithIntent:
             'shouldEndSession': end_session
         }
 
-    def _response(self, speechlet_response, session_attributes={}):
+    @staticmethod
+    def _response(speechlet_response, session_attributes={}):
         return {
             'version': '1.0',
             'sessionAttributes': session_attributes,
