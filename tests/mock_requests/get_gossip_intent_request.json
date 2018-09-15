@@ -42,7 +42,7 @@
 		"timestamp": "2018-06-02T13:16:17Z",
 		"locale": "en-GB",
 		"intent": {
-			"name": "getGossip",
+			"name": "GetGossipIntent",
 			"confirmationStatus": "NONE"
 		}
 	}
