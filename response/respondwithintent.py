@@ -1,4 +1,4 @@
-import gossip_request
+from response import gossip_request
 
 
 class RespondWithIntent:
