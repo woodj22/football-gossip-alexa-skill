@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from response import RespondWithIntent
+from responses import RespondWithIntent
 
 
 def handler(event, context):

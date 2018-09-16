@@ -1,11 +1,11 @@
 import unittest
 from unittest import mock
-from response import RespondWithIntent
+from responses import RespondWithIntent
 
 
 class TestIntentResponse(unittest.TestCase):
 
-    @mock.patch('response.gossip_request.get_gossip_as_ssml')
+    @mock.patch('responses.gossip.get_gossip_as_ssml')
     def test_get_gossip_response_returns_correct_json(self, mock_get):
         mock_get.return_value = "<speak>test output</speak>"
 
@@ -25,7 +25,7 @@ class TestIntentResponse(unittest.TestCase):
         expected_result = {
             'version': '1.0',
             'sessionAttributes': {},
-            'response': speechlet_response
+            'responses': speechlet_response
         }
         actual_result = RespondWithIntent().get_gossip_response()
         self.assertEqual(expected_result, actual_result)
@@ -53,7 +53,7 @@ class TestIntentResponse(unittest.TestCase):
         expected_result = {
             'version': '1.0',
             'sessionAttributes': {},
-            'response': speechlet_response
+            'responses': speechlet_response
         }
 
         actual_result = RespondWithIntent().get_help_response()
@@ -76,7 +76,7 @@ class TestIntentResponse(unittest.TestCase):
         expected_result = {
             'version': '1.0',
             'sessionAttributes': {},
-            'response': speechlet_response
+            'responses': speechlet_response
         }
 
         actual_result = RespondWithIntent().get_stop_response()
@@ -99,7 +99,7 @@ class TestIntentResponse(unittest.TestCase):
         expected_result = {
             'version': '1.0',
             'sessionAttributes': {},
-            'response': speechlet_response
+            'responses': speechlet_response
         }
 
         actual_result = RespondWithIntent().get_fallback_response()

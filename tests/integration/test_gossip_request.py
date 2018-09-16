@@ -1,5 +1,5 @@
 import unittest
-from response.gossip_request import retrieve_gossip_strings
+from responses.gossip import retrieve_gossip_strings
 
 
 class TestGossipRequest(unittest.TestCase):

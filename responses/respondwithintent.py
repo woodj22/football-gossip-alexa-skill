@@ -1,15 +1,15 @@
-from response import gossip_request
+from responses import gossip
 
 
 class RespondWithIntent:
 
     def get_gossip_response(self):
-        speech_output = gossip_request.get_gossip_as_ssml()
+        speech_output = gossip.get_gossip_as_ssml()
 
         return self._response(self._build_speechlet_response('football gossip', speech_output, True))
 
     def get_help_response(self):
-        """ Help response must end in a question. Amazon rules."""
+        """ Help responses must end in a question. Amazon rules."""
         output = "<speak><s>You can say what's the gossip, or, you can say exit...</s> <s> What can I help you with?</s></speak>"
 
         return self._response(self._build_speechlet_with_reprompt_response('football gossip', output, output, False))
@@ -42,7 +42,7 @@ class RespondWithIntent:
 
     @staticmethod
     def _build_speechlet_with_reprompt_response(title, output, reprompt_text, end_session):
-        """ create a simple json response with a prompt """
+        """ create a simple json responses with a prompt """
 
         return {
             'outputSpeech': {
@@ -68,5 +68,5 @@ class RespondWithIntent:
         return {
             'version': '1.0',
             'sessionAttributes': session_attributes,
-            'response': speechlet_response
+            'responses': speechlet_response
         }
