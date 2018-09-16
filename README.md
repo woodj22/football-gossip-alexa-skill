@@ -1,4 +1,4 @@
-# football-gossip-alexa-skill
+# football-gossip-alexa-skill [![Build Status](https://travis-ci.org/woodj22/football-gossip-alexa-skill.svg?branch=master)](https://travis-ci.org/woodj22/football-gossip-alexa-skill)
 Scrape the football gossip from BBC sports and present it in Alexa skill JSON.
 
 
