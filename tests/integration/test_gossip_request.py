@@ -8,5 +8,4 @@ class TestGossipRequest(unittest.TestCase):
         gossip_url = "https://www.bbc.co.uk/sport/football/gossip"
 
         response = retrieve_gossip_strings(gossip_url)
-        print(response)
         self.assertIsInstance(response, list)
