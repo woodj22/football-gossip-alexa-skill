@@ -17,9 +17,15 @@ service: football-gossip
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+  defaultStage: sandbox
+
 provider:
   name: aws
   runtime: python3.6
+  stage: ${opt:stage, self:custom.defaultStage}
 
 # you can overwrite defaults here
 #  stage: dev
@@ -61,9 +67,6 @@ functions:
 plugins:
   - serverless-python-requirements
 
-custom:
-  pythonRequirements:
-    dockerizePip: non-linux
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
