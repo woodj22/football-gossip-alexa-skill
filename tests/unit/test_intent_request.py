@@ -5,7 +5,7 @@ from response import RespondWithIntent
 
 class TestIntentResponse(unittest.TestCase):
 
-    @mock.patch('gossip_request.get_gossip_as_ssml')
+    @mock.patch('response.gossip_request.get_gossip_as_ssml')
     def test_get_gossip_response_returns_correct_json(self, mock_get):
         mock_get.return_value = "<speak>test output</speak>"
 
