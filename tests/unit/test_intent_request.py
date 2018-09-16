@@ -34,7 +34,7 @@ class TestIntentResponse(unittest.TestCase):
         speechlet_response = {
             'outputSpeech': {
                 'type': 'SSML',
-                "ssml": "<speak><s>You can say get me the gossip, or, you can say exit...</s> <s> What can I help you with?</s></speak>"
+                "ssml": "<speak><s>You can say what's the gossip, or, you can say exit...</s> <s> What can I help you with?</s></speak>"
             },
             'card': {
                 'type': 'Simple',
@@ -44,7 +44,7 @@ class TestIntentResponse(unittest.TestCase):
             'reprompt': {
                 'outputSpeech': {
                     'type': 'SSML',
-                    'ssml': "<speak><s>You can say get me the gossip, or, you can say exit...</s> <s> What can I help you with?</s></speak>"
+                    'ssml': "<speak><s>You can say what's the gossip, or, you can say exit...</s> <s> What can I help you with?</s></speak>"
                 }
             },
             'shouldEndSession': False,

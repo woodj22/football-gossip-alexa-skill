@@ -1,0 +1,8 @@
+language: ruby
+python:
+ - "3.6"
+
+virtualenv:
+  system_site_packages: true
+
+script: python3 -m unittest
