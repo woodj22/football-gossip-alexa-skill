@@ -7,21 +7,33 @@ Scrape the football gossip from BBC sports and present it in Alexa skill JSON.
 - serverless framework installed globally (`npm install -g serverless`)
 
 - Docker. This is to build the python packages on a linux distribution ready for the AWS EC2 instance the lambda function will run on.
+
+- virtualenv for development
 ### Lets get started
 
 #### Start virtualenv
 
 I have included a virtualenv directory with all the python requirements contained within.
-To start the environment:
+To create a python 3.6 environment in virtualenv folder called env:
 
-`source venv/bin/activate`
+`virtualenv env --python=python3.6`
 
-You can then install any python modules within this environment and then add them to the `requirements.txt` so that they can be pased around properly.
+Then activate it and install all the requirements: 
+
+`source env/bin/activate`
+`pip install -r requirements.txt`
+
+
+You can then install any python modules within this environment and then add them to the `requirements.txt` so that they can be passed around properly.
+the command `pip freeze > requirements.txt` Will add any dependencies installed in the virtualenv to the requirements.txt which under version control. 
+
 
 #### Install requirements
 
-run `npm install --save serverless-python-requirements`
-This installs all the requirements if any changes have been made.
+This installs all the requirements if any changes have been made to the node modules
+
+`npm install`
+
 
 
 #### Test the code
