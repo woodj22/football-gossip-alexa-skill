@@ -8,12 +8,14 @@ def handler(event, context):
             "amzn1.ask.skill.1001f962-280f-4cc9-a9f5-7888feba598c"):
         raise ValueError("Invalid Application ID")
 
+    print('eventType: ' + event['request']['type'])
     if event['request']['type'] == "IntentRequest":
         return on_intent(event['request'], event['session'])
 
     if event['request']['type'] == "LaunchRequest":
         return on_launch(event['request'], event['session'])
-    return
+
+    raise ValueError("Invalid Request")
 
 
 def on_launch(request, session):
@@ -29,6 +31,7 @@ def on_intent(intent_request, session):
 
     intent_name = intent_request['intent']['name']
     responder = RespondWithIntent()
+    print('intent_name: ' + intent_name)
     if intent_name == "GetGossipIntent":
         return responder.get_gossip_response()
     if intent_name == "AMAZON.HelpIntent":

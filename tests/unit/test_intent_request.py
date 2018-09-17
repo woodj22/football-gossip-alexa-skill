@@ -25,7 +25,7 @@ class TestIntentResponse(unittest.TestCase):
         expected_result = {
             'version': '1.0',
             'sessionAttributes': {},
-            'responses': speechlet_response
+            'response': speechlet_response
         }
         actual_result = RespondWithIntent().get_gossip_response()
         self.assertEqual(expected_result, actual_result)
@@ -53,7 +53,7 @@ class TestIntentResponse(unittest.TestCase):
         expected_result = {
             'version': '1.0',
             'sessionAttributes': {},
-            'responses': speechlet_response
+            'response': speechlet_response
         }
 
         actual_result = RespondWithIntent().get_help_response()
@@ -76,7 +76,7 @@ class TestIntentResponse(unittest.TestCase):
         expected_result = {
             'version': '1.0',
             'sessionAttributes': {},
-            'responses': speechlet_response
+            'response': speechlet_response
         }
 
         actual_result = RespondWithIntent().get_stop_response()
@@ -99,7 +99,7 @@ class TestIntentResponse(unittest.TestCase):
         expected_result = {
             'version': '1.0',
             'sessionAttributes': {},
-            'responses': speechlet_response
+            'response': speechlet_response
         }
 
         actual_result = RespondWithIntent().get_fallback_response()

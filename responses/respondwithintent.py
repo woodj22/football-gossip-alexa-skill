@@ -68,5 +68,5 @@ class RespondWithIntent:
         return {
             'version': '1.0',
             'sessionAttributes': session_attributes,
-            'responses': speechlet_response
+            'response': speechlet_response
         }
